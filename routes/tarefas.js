@@ -1,27 +1,17 @@
 const express = require("express");
 
-const app = express();
-
-app.use(express.json());
+const router = express.Router();
 
 let tarefas = [
   { id: 1, titulo: "Fazer o primeiro get" },
   { id: 2, titulo: "Fazer a primeira listagem com JSON" },
 ];
 
-app.get("/", (req, res) => {
-  res.send("Olá, mundo!");
-});
-
-app.get("/sobre", (req, res) => {
-  res.send("Aplicativo de gestão de tarefas");
-});
-
-app.get("/tarefas", (req, res) => {
+router.get("/", (req, res) => {
   res.status(200).json(tarefas);
 });
 
-app.get("/tarefas/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   console.log(req.params);
 
   const id = Number(req.params.id);
@@ -33,7 +23,7 @@ app.get("/tarefas/:id", (req, res) => {
   res.status(200).json(tarefa);
 });
 
-app.post("/tarefas", (req, res) => {
+router.post("/", (req, res) => {
   const novaTarefa = {
     id: tarefas.length + 1,
     titulo: req.body.titulo,
@@ -43,7 +33,7 @@ app.post("/tarefas", (req, res) => {
   res.status(201).json(novaTarefa);
 });
 
-app.put("/tarefas/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   const id = Number(req.params.id);
   const tarefa = tarefas.find((t) => t.id === id);
   if (!tarefa) {
@@ -55,7 +45,7 @@ app.put("/tarefas/:id", (req, res) => {
   res.status(200).json(tarefa);
 });
 
-app.patch("/tarefas/:id", (req, res) => {
+router.patch("/:id", (req, res) => {
   const id = Number(req.params.id);
   const tarefa = tarefas.find((t) => t.id === id);
   if (!tarefa) {
@@ -66,7 +56,7 @@ app.patch("/tarefas/:id", (req, res) => {
   res.status(200).json(tarefa);
 });
 
-app.delete("/tarefas/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = Number(req.params.id);
   const indexTarefa = tarefas.findIndex((t) => t.id === id);
   if (indexTarefa === -1) {
@@ -76,6 +66,4 @@ app.delete("/tarefas/:id", (req, res) => {
   res.status(204).end();
 });
 
-app.listen(3000, () => {
-  console.log("Ouvindo a porta 3000");
-});
+module.exports = router;
