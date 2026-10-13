@@ -1,10 +1,15 @@
 const express = require("express");
+const { ZodError } = require("zod");
+const criarTarefaSchema = require("../schemas/criarTarefa.schema");
+const { id } = require("zod/locales");
 
 const router = express.Router();
 
+var proximoId = 0;
+
 let tarefas = [
-  { id: 1, titulo: "Fazer o primeiro get" },
-  { id: 2, titulo: "Fazer a primeira listagem com JSON" },
+  { id: proximoId++, titulo: "Fazer o primeiro get" },
+  { id: proximoId++, titulo: "Fazer a primeira listagem com JSON" },
 ];
 
 router.get("/", (req, res) => {
@@ -24,13 +29,23 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const novaTarefa = {
-    id: tarefas.length + 1,
-    titulo: req.body.titulo,
-    completa: false,
-  };
-  tarefas.push(novaTarefa);
-  res.status(201).json(novaTarefa);
+  try {
+    const dados = criarTarefaSchema.parse(req.body);
+    const novaTarefa = {
+      id: proximoId++,
+      titulo: dados.titulo,
+      prioridade: dados.prioridade,
+    };
+    tarefas.push(novaTarefa);
+    res.status(201).json(novaTarefa);
+  } catch (erro) {
+    if (erro instanceof ZodError) {
+      return res
+        .status(404)
+        .json({ erro: "Dados inválidos", detalhes: erro.issues });
+    }
+    throw erro;
+  }
 });
 
 router.put("/:id", (req, res) => {

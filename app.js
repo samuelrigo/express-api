@@ -22,8 +22,8 @@ const tarefaRouter = require("./routes/tarefas");
 const comentariosRouter = require("./routes/comentarios");
 
 app.use(express.json());
-app.use(cors);
-app.use(helmet);
+app.use(cors());
+app.use(helmet());
 app.use(verificarApiKey);
 app.use("/tarefas", tarefaRouter);
 app.use("/tarefas/:tarefaId/comentarios", comentariosRouter);
