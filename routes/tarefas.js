@@ -23,7 +23,7 @@ router.get("/:id", (req, res) => {
   const tarefa = tarefas.find((t) => t.id === id);
 
   if (!tarefa) {
-    res.status(404).json("Não foi possível encontrar a tarefa");
+    return erroResposta(res, 404, "Tarefa não encontrada");
   }
   res.status(200).json(tarefa);
 });
@@ -42,7 +42,7 @@ router.put("/:id", (req, res) => {
   const id = Number(req.params.id);
   const tarefa = tarefas.find((t) => t.id === id);
   if (!tarefa) {
-    res.status(404).json("Não foi possível encontrar a tarefa");
+    return erroResposta(res, 404, "Tarefa não encontrada");
   }
 
   tarefa.titulo = req.body.titulo;
@@ -54,7 +54,7 @@ router.patch("/:id", (req, res) => {
   const id = Number(req.params.id);
   const tarefa = tarefas.find((t) => t.id === id);
   if (!tarefa) {
-    res.status(404).json("Não foi possível encontrar a tarefa");
+    return erroResposta(res, 404, "Tarefa não encontrada");
   }
 
   Object.assign(tarefa, req.body);
@@ -65,7 +65,7 @@ router.delete("/:id", (req, res) => {
   const id = Number(req.params.id);
   const indexTarefa = tarefas.findIndex((t) => t.id === id);
   if (indexTarefa === -1) {
-    res.status(404).json("Não foi possível encontrar a tarefa");
+    return erroResposta(res, 404, "Tarefa não encontrada");
   }
   tarefas.splice(indexTarefa, 1);
   res.status(204).end();
