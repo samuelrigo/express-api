@@ -6,3 +6,4 @@ const erroResposta = (res, status, message, details) => {
     },
   });
 };
+module.exports = erroResposta;

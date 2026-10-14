@@ -2,6 +2,7 @@ const express = require("express");
 const { ZodError } = require("zod");
 const criarTarefaSchema = require("../schemas/criarTarefa.schema");
 const validarBody = require("../middlewares/validarBody");
+const erroResposta = require("../middlewares/erroResposta");
 
 const router = express.Router();
 
