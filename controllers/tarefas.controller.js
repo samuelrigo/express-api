@@ -47,10 +47,21 @@ const atualizarTarefaParcial = async (req, res, next) => {
     next(err);
   }
 };
+
+const deletarTarefa = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const indexTarefa = await tarefaService.deletarTarefa(id);
+    res.status(204).end(indexTarefa);
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   buscarPorId,
   listarTarefa,
   criarTarefa,
   atualizarTarefa,
   atualizarTarefaParcial,
+  deletarTarefa,
 };

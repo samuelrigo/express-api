@@ -1,4 +1,4 @@
-const { ErroHttp } = require("../utils/erroHttp");
+const { buscarPorId } = require("../controllers/tarefas.controller");
 
 var proximoId = 0;
 
@@ -12,13 +12,8 @@ const listarTarefas = () => {
 };
 
 const buscarTarefaPorId = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const tarefa = tarefas.find((t) => t.id === id);
-      if (!tarefa) return reject(new ErroHttp(404, "Tarefa não encontrada"));
-      resolve(tarefa);
-    }, 1000);
-  });
+  const tarefa = tarefas.find((t) => t.id === id) || null;
+  return tarefa;
 };
 
 const criarTarefa = (req) => {
@@ -32,27 +27,34 @@ const criarTarefa = (req) => {
 };
 
 const atualizarTarefa = (id, req) => {
-  const tarefa = tarefas.find((t) => t.id === id);
-  if (!tarefa) {
-    throw new ErroHttp(404, "Tarefa não encontrada");
-  }
+  const tarefa = buscarPorId(id);
+  if (!tarefa) return null;
   tarefa.titulo = req.titulo;
   tarefa.completa = req.completa;
   return tarefa;
 };
 const atualizarTarefaParcial = (id, req) => {
-  const tarefa = tarefas.find((t) => t.id === id);
+  const tarefa = buscarPorId(id);
   if (!tarefa) {
-    throw new ErroHttp(404, "Tarefa não encontrada");
+    return null;
   }
   Object.assign(tarefa, req);
   return tarefa;
 };
 
+const deletarTarefa = (id) => {
+  const indexTarefa = tarefas.findIndex((t) => t.id === id);
+  if (indexTarefa === -1) {
+    return false;
+  }
+  tarefas.splice(indexTarefa, 1);
+  return true;
+};
 module.exports = {
   buscarTarefaPorId,
   listarTarefas,
   criarTarefa,
   atualizarTarefa,
   atualizarOuCriarTarefa: atualizarTarefaParcial,
+  deletarTarefa,
 };

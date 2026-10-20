@@ -27,14 +27,6 @@ router.patch(
   tarefaController.atualizarTarefaParcial,
 );
 
-// router.delete("/:id", (req, res) => {
-//   const id = Number(req.params.id);
-//   const indexTarefa = tarefas.findIndex((t) => t.id === id);
-//   if (indexTarefa === -1) {
-//     return erroResposta(res, 404, "Tarefa não encontrada");
-//   }
-//   tarefas.splice(indexTarefa, 1);
-//   res.status(204).end();
-// });
+router.delete("/:id", tarefaController.deletarTarefa);
 
 module.exports = router;
