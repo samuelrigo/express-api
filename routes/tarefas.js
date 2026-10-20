@@ -15,17 +15,7 @@ router.get("/:id", tarefaController.buscarPorId);
 
 router.post("/", validarBody(criarTarefaSchema), tarefaController.criarTarefa);
 
-// router.put("/:id", (req, res) => {
-//   const id = Number(req.params.id);
-//   const tarefa = tarefas.find((t) => t.id === id);
-//   if (!tarefa) {
-//     return erroResposta(res, 404, "Tarefa não encontrada");
-//   }
-
-//   tarefa.titulo = req.body.titulo;
-//   tarefa.completa = req.body.completa;
-//   res.status(200).json(tarefa);
-// });
+router.put("/:id", tarefaController.atualizarTarefa);
 
 // router.patch("/:id", (req, res) => {
 //   const id = Number(req.params.id);

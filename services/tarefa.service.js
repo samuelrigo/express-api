@@ -28,4 +28,16 @@ const criarTarefa = (req) => {
   tarefas.push(novaTarefa);
   return novaTarefa;
 };
-module.exports = { buscarTarefaPorId, listarTarefas, criarTarefa };
+
+const atualizarTarefa = (id, req) => {
+  const tarefa = tarefas.find((t) => t.id === id);
+  tarefa.titulo = req.titulo;
+  tarefa.completa = req.completa;
+  return tarefa;
+};
+module.exports = {
+  buscarTarefaPorId,
+  listarTarefas,
+  criarTarefa,
+  atualizarTarefa,
+};
