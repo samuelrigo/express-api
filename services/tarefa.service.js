@@ -9,6 +9,16 @@ const listarTarefas = () => {
   return tarefas;
 };
 
+const buscarTarefaPorId = (id) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const tarefa = tarefas.find((t) => t.id === id);
+      if (!tarefa) return reject(new ErroHttp(404, "Tarefa não encontrada"));
+      resolve(tarefa);
+    }, 1000);
+  });
+};
+
 const criarTarefa = (req) => {
   const novaTarefa = {
     id: proximoId++,
@@ -18,4 +28,4 @@ const criarTarefa = (req) => {
   tarefas.push(novaTarefa);
   return novaTarefa;
 };
-module.exports = { listarTarefas, criarTarefa };
+module.exports = { buscarTarefaPorId, listarTarefas, criarTarefa };

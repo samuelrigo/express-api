@@ -3,39 +3,15 @@ const { ZodError } = require("zod");
 const criarTarefaSchema = require("../schemas/criarTarefa.schema");
 const validarBody = require("../middlewares/validarBody");
 const erroResposta = require("../middlewares/erroResposta");
+const ErroHttp = require("../utils/erroHttp");
 
 const router = express.Router();
 
 const tarefaController = require("../controllers/tarefas.controller");
 
-// class ErroHttp extends Error {
-//   constructor(status, message) {
-//     super(message);
-//     this.status = status;
-//   }
-// }
-
-// function buscarTarefaAsync(id) {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       const tarefa = tarefas.find((t) => t.id === id);
-//       if (!tarefa) return reject(new ErroHttp(404, "Tarefa não encontrada"));
-//       resolve(tarefa);
-//     }, 1000);
-//   });
-// }
 router.get("/", tarefaController.listarTarefa);
 
-// router.get("/:id", async (req, res, next) => {
-//   console.log(req.params);
-//   try {
-//     const id = Number(req.params.id);
-//     const tarefa = await buscarTarefaAsync(id);
-//     res.status(200).json(tarefa);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+router.get("/:id", tarefaController.buscarPorId);
 
 router.post("/", validarBody(criarTarefaSchema), tarefaController.criarTarefa);
 
