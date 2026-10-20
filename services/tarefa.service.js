@@ -1,3 +1,5 @@
+const { ErroHttp } = require("../utils/erroHttp");
+
 var proximoId = 0;
 
 let tarefas = [
@@ -31,13 +33,26 @@ const criarTarefa = (req) => {
 
 const atualizarTarefa = (id, req) => {
   const tarefa = tarefas.find((t) => t.id === id);
+  if (!tarefa) {
+    throw new ErroHttp(404, "Tarefa não encontrada");
+  }
   tarefa.titulo = req.titulo;
   tarefa.completa = req.completa;
   return tarefa;
 };
+const atualizarTarefaParcial = (id, req) => {
+  const tarefa = tarefas.find((t) => t.id === id);
+  if (!tarefa) {
+    throw new ErroHttp(404, "Tarefa não encontrada");
+  }
+  Object.assign(tarefa, req);
+  return tarefa;
+};
+
 module.exports = {
   buscarTarefaPorId,
   listarTarefas,
   criarTarefa,
   atualizarTarefa,
+  atualizarOuCriarTarefa: atualizarTarefaParcial,
 };

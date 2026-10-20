@@ -37,4 +37,20 @@ const atualizarTarefa = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { buscarPorId, listarTarefa, criarTarefa, atualizarTarefa };
+
+const atualizarTarefaParcial = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const tarefa = await tarefaService.atualizarTarefaParcial(id, req.body);
+    res.status(200).json(tarefa);
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports = {
+  buscarPorId,
+  listarTarefa,
+  criarTarefa,
+  atualizarTarefa,
+  atualizarTarefaParcial,
+};

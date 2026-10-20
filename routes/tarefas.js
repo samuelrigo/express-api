@@ -15,18 +15,17 @@ router.get("/:id", tarefaController.buscarPorId);
 
 router.post("/", validarBody(criarTarefaSchema), tarefaController.criarTarefa);
 
-router.put("/:id", tarefaController.atualizarTarefa);
+router.put(
+  "/:id",
+  validarBody(criarTarefaSchema),
+  tarefaController.atualizarTarefa,
+);
 
-// router.patch("/:id", (req, res) => {
-//   const id = Number(req.params.id);
-//   const tarefa = tarefas.find((t) => t.id === id);
-//   if (!tarefa) {
-//     return erroResposta(res, 404, "Tarefa não encontrada");
-//   }
-
-//   Object.assign(tarefa, req.body);
-//   res.status(200).json(tarefa);
-// });
+router.patch(
+  "/:id",
+  validarBody(criarTarefaSchema),
+  tarefaController.atualizarTarefaParcial,
+);
 
 // router.delete("/:id", (req, res) => {
 //   const id = Number(req.params.id);
