@@ -1,9 +1,10 @@
+const emProducao = process.env.NODE_ENV === "production";
 const tratadorDeErros = (err, req, res, next) => {
   console.error(err);
 
-  const status = err.status || 500;
-  const message = err.status ? err.message : "Erro interno no servidor";
-
-  res.status(status).json({ error: { message } });
+  res.status(err.status || 500).json({
+    erro: err.status ? err.message : "Erro interno no servidor",
+    ...(emProducao ? {} : { stack: err.stack }),
+  });
 };
 module.exports = tratadorDeErros;

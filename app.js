@@ -10,8 +10,7 @@ const verificarApiKey = require("./middlewares/verificarApiKey");
 const tratadorDeErros = require("./middlewares/tratadorDeErros");
 
 const app = express();
-
-const porta = process.env.PORT || 3000;
+const emProducao = process.env.NODE_ENV === "production";
 
 const origemPermitida = "http://localhost:8080";
 
@@ -24,13 +23,12 @@ const limiter = rateLimit({
 const tarefaRouter = require("./routes/tarefas");
 const comentariosRouter = require("./routes/comentarios");
 
-app.use(morgan("dev"));
+app.use(morgan(emProducao ? "combined" : "dev"));
 app.use(express.json());
 app.use(
   cors({
-    origin: origemPermitida,
+    origin: emProducao ? [origemPermitida] : "*",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
   }),
 );
 app.use(helmet());
@@ -40,6 +38,4 @@ app.use("/tarefas", tarefaRouter);
 app.use("/tarefas/:tarefaId/comentarios", comentariosRouter);
 app.use(tratadorDeErros);
 
-app.listen(porta, () => {
-  console.log(`Ouvindo a porta ${porta}`);
-});
+module.exports = app;
